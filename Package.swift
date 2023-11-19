@@ -8,26 +8,25 @@ let package = Package(
     name: "SwiftRexMacros",
     platforms: [.macOS(.v10_15), .iOS(.v13), .tvOS(.v13), .watchOS(.v6), .macCatalyst(.v13)],
     products: [
-        .library(name: "SwiftRexMacros", targets: ["SwiftRexMacros"]),
-        .executable(name: "SwiftRexMacrosClient", targets: ["SwiftRexMacrosClient"])
+        .library(name: "SwiftRexMacros", targets: ["SwiftRexMacros"])
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-syntax.git", from: "509.0.0")
     ],
     targets: [
         .macro(
-            name: "PrismMacro",
+            name: "SwiftRexMacroImplementation",
             dependencies: [
                 .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
                 .product(name: "SwiftCompilerPlugin", package: "swift-syntax")
             ]
         ),
-        .target(name: "SwiftRexMacros", dependencies: ["PrismMacro"]),
+        .target(name: "SwiftRexMacros", dependencies: ["SwiftRexMacroImplementation"]),
         .executableTarget(name: "SwiftRexMacrosClient", dependencies: ["SwiftRexMacros"]),
         .testTarget(
             name: "SwiftRexMacrosTests",
             dependencies: [
-                "PrismMacro",
+                "SwiftRexMacroImplementation",
                 .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax"),
             ]
         )

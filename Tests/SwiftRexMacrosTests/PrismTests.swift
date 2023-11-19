@@ -3,19 +3,22 @@ import SwiftSyntaxMacrosTestSupport
 import XCTest
 
 // Macro implementations build for the host, so the corresponding module is not available when cross-compiling. Cross-compiled tests may still make use of the macro itself in end-to-end tests.
-#if canImport(PrismMacro)
-import PrismMacro
+#if canImport(SwiftRexMacroImplementation)
+import SwiftRexMacroImplementation
 
 let testMacros: [String: Macro.Type] = [
     "Prism": Prism.self,
     "PrismCase": PrismCase.self,
     "NoPrism": NoPrism.self,
+    "MemberwiseInit": MemberwiseInit.self,
+    "NoMemberwiseInit": NoMemberwiseInit.self
+    // "NoMemberwiseInitDefaultValue": NoMemberwiseInitDefaultValue.self,
 ]
 #endif
 
-final class SwiftRexMacrosTests: XCTestCase {
+final class PrismTests: XCTestCase {
     func testPrismEmptyEnum() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             @Prism
@@ -32,7 +35,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testPrismInStructError() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             @Prism
@@ -52,7 +55,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testPrismSingleCase() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             @Prism
@@ -64,7 +67,9 @@ final class SwiftRexMacrosTests: XCTestCase {
             """
             enum Color {
                 case red
+            }
 
+            extension Color {
                 var red: Void? {
                     if case .red = self {
                         ()
@@ -72,7 +77,9 @@ final class SwiftRexMacrosTests: XCTestCase {
                         nil
                     }
                 }
+            }
 
+            extension Color {
                 var isRed: Bool {
                     if case .red = self {
                         true
@@ -90,7 +97,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testPrismSingleCaseWithSingleUnnamedAssociatedValue() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             @Prism
@@ -102,22 +109,26 @@ final class SwiftRexMacrosTests: XCTestCase {
             """
             enum Color {
                 case red(Double)
+            }
 
+            extension Color {
                 var red: Double? {
                     get {
-                         guard case let .red(value) = self else {
-                             return nil
-                         }
-                         return value
-                     }
-                     set {
-                         guard case .red = self, let newValue = newValue else {
-                             return
-                         }
-                         self = .red(newValue)
-                     }
+                        guard case let .red(value) = self else {
+                            return nil
+                        }
+                        return value
+                    }
+                    set {
+                        guard case .red = self, let newValue = newValue else {
+                            return
+                        }
+                        self = .red(newValue)
+                    }
                 }
+            }
 
+            extension Color {
                 var isRed: Bool {
                     if case .red = self {
                         true
@@ -135,7 +146,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testPrismSingleCaseWithSingleNamedAssociatedValue() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             @Prism
@@ -147,22 +158,26 @@ final class SwiftRexMacrosTests: XCTestCase {
             """
             enum Color {
                 case red(brightness: Double)
+            }
 
+            extension Color {
                 var red: Double? {
                     get {
-                         guard case let .red(value) = self else {
-                             return nil
-                         }
-                         return value
-                     }
-                     set {
-                         guard case .red = self, let newValue = newValue else {
-                             return
-                         }
-                         self = .red(brightness: newValue)
-                     }
+                        guard case let .red(value) = self else {
+                            return nil
+                        }
+                        return value
+                    }
+                    set {
+                        guard case .red = self, let newValue = newValue else {
+                            return
+                        }
+                        self = .red(brightness: newValue)
+                    }
                 }
+            }
 
+            extension Color {
                 var isRed: Bool {
                     if case .red = self {
                         true
@@ -180,7 +195,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testPrismSingleCaseWithDualUnnamedAssociatedValues() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             @Prism
@@ -192,22 +207,26 @@ final class SwiftRexMacrosTests: XCTestCase {
             """
             enum Color {
                 case red(Double, Double)
+            }
 
+            extension Color {
                 var red: (Double, Double)? {
                     get {
-                         guard case let .red(associatedValue0, associatedValue1) = self else {
-                             return nil
-                         }
-                         return (associatedValue0, associatedValue1)
-                     }
-                     set {
-                         guard case .red = self, let newValue = newValue else {
-                             return
-                         }
-                         self = .red(newValue.0, newValue.1)
-                     }
+                        guard case let .red(associatedValue0, associatedValue1) = self else {
+                            return nil
+                        }
+                        return (associatedValue0, associatedValue1)
+                    }
+                    set {
+                        guard case .red = self, let newValue = newValue else {
+                            return
+                        }
+                        self = .red(newValue.0, newValue.1)
+                    }
                 }
+            }
 
+            extension Color {
                 var isRed: Bool {
                     if case .red = self {
                         true
@@ -225,7 +244,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testPrismSingleCaseWithDualNamedAssociatedValues() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             @Prism
@@ -237,22 +256,26 @@ final class SwiftRexMacrosTests: XCTestCase {
             """
             enum Color {
                 case red(brightness: Double, opacity: Double)
+            }
 
+            extension Color {
                 var red: (brightness: Double, opacity: Double)? {
                     get {
-                         guard case let .red(brightness, opacity) = self else {
-                             return nil
-                         }
-                         return (brightness: brightness, opacity: opacity)
-                     }
-                     set {
-                         guard case .red = self, let newValue = newValue else {
-                             return
-                         }
-                         self = .red(brightness: newValue.brightness, opacity: newValue.opacity)
-                     }
+                        guard case let .red(brightness, opacity) = self else {
+                            return nil
+                        }
+                        return (brightness: brightness, opacity: opacity)
+                    }
+                    set {
+                        guard case .red = self, let newValue = newValue else {
+                            return
+                        }
+                        self = .red(brightness: newValue.brightness, opacity: newValue.opacity)
+                    }
                 }
+            }
 
+            extension Color {
                 var isRed: Bool {
                     if case .red = self {
                         true
@@ -270,7 +293,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testPrismSingleCaseWithDualAssociatedValuesOnlyFirstNamed() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             @Prism
@@ -282,22 +305,26 @@ final class SwiftRexMacrosTests: XCTestCase {
             """
             enum Color {
                 case red(brightness: Double, Double)
+            }
 
+            extension Color {
                 var red: (brightness: Double, Double)? {
                     get {
-                         guard case let .red(brightness, associatedValue1) = self else {
-                             return nil
-                         }
-                         return (brightness: brightness, associatedValue1)
-                     }
-                     set {
-                         guard case .red = self, let newValue = newValue else {
-                             return
-                         }
-                         self = .red(brightness: newValue.brightness, newValue.1)
-                     }
+                        guard case let .red(brightness, associatedValue1) = self else {
+                            return nil
+                        }
+                        return (brightness: brightness, associatedValue1)
+                    }
+                    set {
+                        guard case .red = self, let newValue = newValue else {
+                            return
+                        }
+                        self = .red(brightness: newValue.brightness, newValue.1)
+                    }
                 }
+            }
 
+            extension Color {
                 var isRed: Bool {
                     if case .red = self {
                         true
@@ -315,7 +342,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testPrismSingleCaseWithDualAssociatedValuesOnlySecondNamed() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             @Prism
@@ -327,22 +354,26 @@ final class SwiftRexMacrosTests: XCTestCase {
             """
             enum Color {
                 case red(Double, opacity: Double)
+            }
 
+            extension Color {
                 var red: (Double, opacity: Double)? {
                     get {
-                         guard case let .red(associatedValue0, opacity) = self else {
-                             return nil
-                         }
-                         return (associatedValue0, opacity: opacity)
-                     }
-                     set {
-                         guard case .red = self, let newValue = newValue else {
-                             return
-                         }
-                         self = .red(newValue.0, opacity: newValue.opacity)
-                     }
+                        guard case let .red(associatedValue0, opacity) = self else {
+                            return nil
+                        }
+                        return (associatedValue0, opacity: opacity)
+                    }
+                    set {
+                        guard case .red = self, let newValue = newValue else {
+                            return
+                        }
+                        self = .red(newValue.0, opacity: newValue.opacity)
+                    }
                 }
+            }
 
+            extension Color {
                 var isRed: Bool {
                     if case .red = self {
                         true
@@ -360,7 +391,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testPrismSingleCasePublic() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             @Prism(visibility: .public)
@@ -372,7 +403,9 @@ final class SwiftRexMacrosTests: XCTestCase {
             """
             enum Color {
                 case red
+            }
 
+            extension Color {
                 public var red: Void? {
                     if case .red = self {
                         ()
@@ -380,7 +413,9 @@ final class SwiftRexMacrosTests: XCTestCase {
                         nil
                     }
                 }
+            }
 
+            extension Color {
                 public var isRed: Bool {
                     if case .red = self {
                         true
@@ -398,7 +433,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testPrismSingleCaseInternal() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             @Prism(visibility: .internal)
@@ -410,7 +445,9 @@ final class SwiftRexMacrosTests: XCTestCase {
             """
             enum Color {
                 case red
+            }
 
+            extension Color {
                 internal var red: Void? {
                     if case .red = self {
                         ()
@@ -418,7 +455,9 @@ final class SwiftRexMacrosTests: XCTestCase {
                         nil
                     }
                 }
+            }
 
+            extension Color {
                 internal var isRed: Bool {
                     if case .red = self {
                         true
@@ -436,7 +475,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testPrismSingleCaseFilePrivate() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             @Prism(visibility: .fileprivate)
@@ -448,7 +487,9 @@ final class SwiftRexMacrosTests: XCTestCase {
             """
             enum Color {
                 case red
+            }
 
+            extension Color {
                 fileprivate var red: Void? {
                     if case .red = self {
                         ()
@@ -456,7 +497,9 @@ final class SwiftRexMacrosTests: XCTestCase {
                         nil
                     }
                 }
+            }
 
+            extension Color {
                 fileprivate var isRed: Bool {
                     if case .red = self {
                         true
@@ -474,7 +517,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testPrismSingleCasePrivate() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             @Prism(visibility: .private)
@@ -486,7 +529,9 @@ final class SwiftRexMacrosTests: XCTestCase {
             """
             enum Color {
                 case red
+            }
 
+            extension Color {
                 private var red: Void? {
                     if case .red = self {
                         ()
@@ -494,7 +539,9 @@ final class SwiftRexMacrosTests: XCTestCase {
                         nil
                     }
                 }
+            }
 
+            extension Color {
                 private var isRed: Bool {
                     if case .red = self {
                         true
@@ -512,7 +559,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testPrismMultipleCasesInline() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             @Prism(visibility: .public)
@@ -524,7 +571,9 @@ final class SwiftRexMacrosTests: XCTestCase {
             """
             enum Color {
                 case red, green, blue
+            }
 
+            extension Color {
                 public var red: Void? {
                     if case .red = self {
                         ()
@@ -532,7 +581,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         nil
                     }
                 }
-
                 public var green: Void? {
                     if case .green = self {
                         ()
@@ -540,7 +588,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         nil
                     }
                 }
-
                 public var blue: Void? {
                     if case .blue = self {
                         ()
@@ -548,7 +595,9 @@ final class SwiftRexMacrosTests: XCTestCase {
                         nil
                     }
                 }
+            }
 
+            extension Color {
                 public var isRed: Bool {
                     if case .red = self {
                         true
@@ -556,7 +605,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         false
                     }
                 }
-
                 public var isGreen: Bool {
                     if case .green = self {
                         true
@@ -564,7 +612,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         false
                     }
                 }
-
                 public var isBlue: Bool {
                     if case .blue = self {
                         true
@@ -582,7 +629,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testPrismMultipleCasesVertical() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             @Prism(visibility: .public)
@@ -598,7 +645,9 @@ final class SwiftRexMacrosTests: XCTestCase {
                 case red
                 case green
                 case blue
+            }
 
+            extension Color {
                 public var red: Void? {
                     if case .red = self {
                         ()
@@ -606,7 +655,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         nil
                     }
                 }
-
                 public var green: Void? {
                     if case .green = self {
                         ()
@@ -614,7 +662,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         nil
                     }
                 }
-
                 public var blue: Void? {
                     if case .blue = self {
                         ()
@@ -622,7 +669,9 @@ final class SwiftRexMacrosTests: XCTestCase {
                         nil
                     }
                 }
+            }
 
+            extension Color {
                 public var isRed: Bool {
                     if case .red = self {
                         true
@@ -630,7 +679,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         false
                     }
                 }
-
                 public var isGreen: Bool {
                     if case .green = self {
                         true
@@ -638,7 +686,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         false
                     }
                 }
-
                 public var isBlue: Bool {
                     if case .blue = self {
                         true
@@ -656,7 +703,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testPrismCaseSingle() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             enum Color {
@@ -698,7 +745,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testPrismCaseMultipleInline() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             enum Color {
@@ -756,7 +803,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testPrismCaseSinglePublic() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             enum Color {
@@ -798,7 +845,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testPrismCaseSingleInternal() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             enum Color {
@@ -840,7 +887,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testPrismCaseSingleFilePrivate() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             enum Color {
@@ -882,7 +929,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testPrismCaseSinglePrivate() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             enum Color {
@@ -924,7 +971,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testPrismPublicPrismCaseInternal() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             @Prism(visibility: .public)
@@ -957,7 +1004,9 @@ final class SwiftRexMacrosTests: XCTestCase {
                     }
                 }
                 case blue
+            }
 
+            extension Color {
                 public var red: Void? {
                     if case .red = self {
                         ()
@@ -965,7 +1014,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         nil
                     }
                 }
-
                 public var blue: Void? {
                     if case .blue = self {
                         ()
@@ -973,7 +1021,9 @@ final class SwiftRexMacrosTests: XCTestCase {
                         nil
                     }
                 }
+            }
 
+            extension Color {
                 public var isRed: Bool {
                     if case .red = self {
                         true
@@ -981,7 +1031,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         false
                     }
                 }
-
                 public var isBlue: Bool {
                     if case .blue = self {
                         true
@@ -999,7 +1048,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testNoPrismSingle() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             @Prism
@@ -1016,7 +1065,9 @@ final class SwiftRexMacrosTests: XCTestCase {
                 case red
                 case green
                 case blue
+            }
 
+            extension Color {
                 var red: Void? {
                     if case .red = self {
                         ()
@@ -1024,7 +1075,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         nil
                     }
                 }
-
                 var blue: Void? {
                     if case .blue = self {
                         ()
@@ -1032,7 +1082,9 @@ final class SwiftRexMacrosTests: XCTestCase {
                         nil
                     }
                 }
+            }
 
+            extension Color {
                 var isRed: Bool {
                     if case .red = self {
                         true
@@ -1040,7 +1092,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         false
                     }
                 }
-
                 var isBlue: Bool {
                     if case .blue = self {
                         true
@@ -1058,7 +1109,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testNoPrismMultipleInline() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             @Prism
@@ -1073,7 +1124,9 @@ final class SwiftRexMacrosTests: XCTestCase {
             enum Color {
                 case red
                 case green, blue
+            }
 
+            extension Color {
                 var red: Void? {
                     if case .red = self {
                         ()
@@ -1081,7 +1134,9 @@ final class SwiftRexMacrosTests: XCTestCase {
                         nil
                     }
                 }
+            }
 
+            extension Color {
                 var isRed: Bool {
                     if case .red = self {
                         true
@@ -1099,7 +1154,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testNoPrismMultipleVertical() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             @Prism
@@ -1117,7 +1172,9 @@ final class SwiftRexMacrosTests: XCTestCase {
                 case red
                 case green
                 case blue
+            }
 
+            extension Color {
                 var red: Void? {
                     if case .red = self {
                         ()
@@ -1125,7 +1182,9 @@ final class SwiftRexMacrosTests: XCTestCase {
                         nil
                     }
                 }
+            }
 
+            extension Color {
                 var isRed: Bool {
                     if case .red = self {
                         true
@@ -1143,7 +1202,7 @@ final class SwiftRexMacrosTests: XCTestCase {
     }
 
     func testMixed() throws {
-#if canImport(PrismMacro)
+#if canImport(SwiftRexMacroImplementation)
         assertMacroExpansion(
             """
             @Prism(visibility: .public)
@@ -1175,17 +1234,17 @@ final class SwiftRexMacrosTests: XCTestCase {
 
                 private var a: String? {
                     get {
-                         guard case let .a(value) = self else {
-                             return nil
-                         }
-                         return value
-                     }
-                     set {
-                         guard case .a = self, let newValue = newValue else {
-                             return
-                         }
-                         self = .a(newValue)
-                     }
+                        guard case let .a(value) = self else {
+                            return nil
+                        }
+                        return value
+                    }
+                    set {
+                        guard case .a = self, let newValue = newValue else {
+                            return
+                        }
+                        self = .a(newValue)
+                    }
                 }
 
                 private var isA: Bool {
@@ -1205,7 +1264,9 @@ final class SwiftRexMacrosTests: XCTestCase {
 
                 var blablabla: String { "aaaa" }
                 func blebleble() -> Int { 3 }
+            }
 
+            extension Bla {
                 public var x: Void? {
                     if case .x = self {
                         ()
@@ -1213,7 +1274,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         nil
                     }
                 }
-
                 public var y: Void? {
                     if case .y = self {
                         ()
@@ -1221,7 +1281,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         nil
                     }
                 }
-
                 public var z: Void? {
                     if case .z = self {
                         ()
@@ -1229,7 +1288,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         nil
                     }
                 }
-
                 public var zzzz: Void? {
                     if case .zzzz = self {
                         ()
@@ -1237,7 +1295,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         nil
                     }
                 }
-
                 public var xxxx: Void? {
                     if case .xxxx = self {
                         ()
@@ -1245,7 +1302,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         nil
                     }
                 }
-
                 public var b: Void? {
                     if case .b = self {
                         ()
@@ -1253,52 +1309,48 @@ final class SwiftRexMacrosTests: XCTestCase {
                         nil
                     }
                 }
-
                 public var c: (Int, other: Date)? {
                     get {
-                         guard case let .c(associatedValue0, other) = self else {
-                             return nil
-                         }
-                         return (associatedValue0, other: other)
-                     }
-                     set {
-                         guard case .c = self, let newValue = newValue else {
-                             return
-                         }
-                         self = .c(newValue.0, other: newValue.other)
-                     }
+                        guard case let .c(associatedValue0, other) = self else {
+                            return nil
+                        }
+                        return (associatedValue0, other: other)
+                    }
+                    set {
+                        guard case .c = self, let newValue = newValue else {
+                            return
+                        }
+                        self = .c(newValue.0, other: newValue.other)
+                    }
                 }
-
                 public var d: (first: Int , other: Date)? {
                     get {
-                         guard case let .d(first, other) = self else {
-                             return nil
-                         }
-                         return (first: first, other: other)
-                     }
-                     set {
-                         guard case .d = self, let newValue = newValue else {
-                             return
-                         }
-                         self = .d(first: newValue.first, other: newValue.other)
-                     }
+                        guard case let .d(first, other) = self else {
+                            return nil
+                        }
+                        return (first: first, other: other)
+                    }
+                    set {
+                        guard case .d = self, let newValue = newValue else {
+                            return
+                        }
+                        self = .d(first: newValue.first, other: newValue.other)
+                    }
                 }
-
                 public var e: (Int, Date)? {
                     get {
-                         guard case let .e(associatedValue0, associatedValue1) = self else {
-                             return nil
-                         }
-                         return (associatedValue0, associatedValue1)
-                     }
-                     set {
-                         guard case .e = self, let newValue = newValue else {
-                             return
-                         }
-                         self = .e(newValue.0, newValue.1)
-                     }
+                        guard case let .e(associatedValue0, associatedValue1) = self else {
+                            return nil
+                        }
+                        return (associatedValue0, associatedValue1)
+                    }
+                    set {
+                        guard case .e = self, let newValue = newValue else {
+                            return
+                        }
+                        self = .e(newValue.0, newValue.1)
+                    }
                 }
-
                 public var someLongName: Void? {
                     if case .someLongName = self {
                         ()
@@ -1306,7 +1358,9 @@ final class SwiftRexMacrosTests: XCTestCase {
                         nil
                     }
                 }
+            }
 
+            extension Bla {
                 public var isX: Bool {
                     if case .x = self {
                         true
@@ -1314,7 +1368,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         false
                     }
                 }
-
                 public var isY: Bool {
                     if case .y = self {
                         true
@@ -1322,7 +1375,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         false
                     }
                 }
-
                 public var isZ: Bool {
                     if case .z = self {
                         true
@@ -1330,7 +1382,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         false
                     }
                 }
-
                 public var isZzzz: Bool {
                     if case .zzzz = self {
                         true
@@ -1338,7 +1389,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         false
                     }
                 }
-
                 public var isXxxx: Bool {
                     if case .xxxx = self {
                         true
@@ -1346,7 +1396,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         false
                     }
                 }
-
                 public var isB: Bool {
                     if case .b = self {
                         true
@@ -1354,7 +1403,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         false
                     }
                 }
-
                 public var isC: Bool {
                     if case .c = self {
                         true
@@ -1362,7 +1410,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         false
                     }
                 }
-
                 public var isD: Bool {
                     if case .d = self {
                         true
@@ -1370,7 +1417,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         false
                     }
                 }
-
                 public var isE: Bool {
                     if case .e = self {
                         true
@@ -1378,7 +1424,6 @@ final class SwiftRexMacrosTests: XCTestCase {
                         false
                     }
                 }
-
                 public var isSomeLongName: Bool {
                     if case .someLongName = self {
                         true

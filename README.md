@@ -1,6 +1,52 @@
 # SwiftRexMacros
 Macros to help automating SwiftRex boilerplate
 
+## MemberwiseInit
+A macro that produces memberwise initializers for a struct, with the option to control the visibility accessor modifier.
+
+### Examples
+```swift
+@MemberwiseInit(visibility: .fileprivate)
+public struct BlackjackCard {
+    var suit = "diamonds", rank = "3"
+    let type: String
+    let flipped: Bool
+    let onFlip: (Bool) -> Void
+}
+
+```
+produces:
+```swift
+extension BlackjackCard {
+    fileprivate init(suit: String = "diamonds", rank: String = "3", type: String, flipped: Bool, onFlip: @escaping (Bool) -> Void) {
+        self.suit = suit
+        self.rank = rank
+        self.type = type
+        self.flipped = flipped
+    }
+}
+```
+
+### Limitations
+Type inference is hard. Swift compiler does an amazing job inferring types, especially in closures. However, re-implementing whatever Swift compiler
+does to infer the types would not be feasible here, and Swift Macros run before type-checkers, so we can't reliably know what type is when a variable
+is not explicitly telling us:
+```swift
+@MemberwiseInit
+struct MyStruct {
+    // Bool
+    var isToday = Calendar.current.isDateInToday(Date())
+
+    // (DateComponents) -> Date?
+    var myCrazyClosure = {
+        Calendar.current.date(from: $0)
+    }
+}
+```
+
+In such situations, the variable may be omited from the init, causing a compiler error, or it may use a wrong value that we tried our best to infer.
+If you face such situations, please explicitly annotate your variables with the proper type, and everything should work as expected.
+
 ## Prism
 A macro that produces predicates and prisms for all cases of an Enum.
 Predicates will be Bool properties in the format `isCaseA` that returns `true` whenever that instance points to the `caseA` case of the enum.
@@ -35,7 +81,7 @@ color1.isGreen // false
 color1.isBlue // false
 ```
 
-### Example os prism:
+### Example of prism:
 ```swift
 @Prism
 enum Contact {
@@ -126,7 +172,7 @@ color1.isBlue // false
 color1.isRed 🚫 // Compiler error, not generated
 ```
 
-### Example os prism:
+### Example of prism:
 ```swift
 enum Contact {
     case email(address: String)
@@ -192,7 +238,7 @@ color1.isBlue // false
 color1.isWhite 🚫 // Compiler error, not generated
 ```
 
-### Example os prism:
+### Example of prism:
 ```swift
 @Prism
 enum Contact {

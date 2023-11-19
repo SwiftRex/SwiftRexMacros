@@ -101,8 +101,8 @@ public enum DeclarationVisibility: String {
 /// - Use `PrismCase` in a case if you want a different visibility only for that case generated code.
 /// - Use only `PrismCase` without `Prism` in the enum if you want code generated only for that case.
 /// - Use `NoPrism` in a case if you don't want code generated for that case.
-@attached(member, names: arbitrary)
-public macro Prism(visibility: DeclarationVisibility = .internal) = #externalMacro(module: "PrismMacro", type: "Prism")
+@attached(extension, names: arbitrary)
+public macro Prism(visibility: DeclarationVisibility = .internal) = #externalMacro(module: "SwiftRexMacroImplementation", type: "Prism")
 
 /// A macro that produces predicates and prisms for a single case of an Enum.
 /// Predicates will be Bool properties in the format `isCaseA` that returns `true` whenever that instance points to the `caseA` case of the enum.
@@ -185,7 +185,7 @@ public macro Prism(visibility: DeclarationVisibility = .internal) = #externalMac
 /// - Use only `PrismCase` without `Prism` in the enum if you want code generated only for that case.
 /// - Use `NoPrism` in a case if you don't want code generated for that case.
 @attached(peer, names: arbitrary)
-public macro PrismCase(visibility: DeclarationVisibility = .internal) = #externalMacro(module: "PrismMacro", type: "PrismCase")
+public macro PrismCase(visibility: DeclarationVisibility = .internal) = #externalMacro(module: "SwiftRexMacroImplementation", type: "PrismCase")
 
 /// A macro that prevents the code generatio of predicates and prisms for a specific case, in an Enum marked with `Prism`
 /// Predicates will be Bool properties in the format `isCaseA` that returns `true` whenever that instance points to the `caseA` case of the enum.
@@ -278,4 +278,10 @@ public macro PrismCase(visibility: DeclarationVisibility = .internal) = #externa
 /// - Use only `PrismCase` without `Prism` in the enum if you want code generated only for that case.
 /// - Use `NoPrism` in a case if you don't want code generated for that case.
 @attached(peer)
-public macro NoPrism() = #externalMacro(module: "PrismMacro", type: "NoPrism")
+public macro NoPrism() = #externalMacro(module: "SwiftRexMacroImplementation", type: "NoPrism")
+
+@attached(extension, names: arbitrary)
+public macro MemberwiseInit(visibility: DeclarationVisibility = .internal) = #externalMacro(module: "SwiftRexMacroImplementation", type: "MemberwiseInit")
+
+@attached(peer)
+public macro NoMemberwiseInit() = #externalMacro(module: "SwiftRexMacroImplementation", type: "NoMemberwiseInit")
