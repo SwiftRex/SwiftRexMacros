@@ -101,7 +101,7 @@ public enum DeclarationVisibility: String {
 /// - Use `PrismCase` in a case if you want a different visibility only for that case generated code.
 /// - Use only `PrismCase` without `Prism` in the enum if you want code generated only for that case.
 /// - Use `NoPrism` in a case if you don't want code generated for that case.
-@attached(extension, names: arbitrary)
+@attached(member, names: arbitrary)
 public macro Prism(visibility: DeclarationVisibility = .internal) = #externalMacro(module: "SwiftRexMacroImplementation", type: "Prism")
 
 /// A macro that produces predicates and prisms for a single case of an Enum.

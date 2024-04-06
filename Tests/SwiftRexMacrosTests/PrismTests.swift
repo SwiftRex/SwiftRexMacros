@@ -67,9 +67,7 @@ final class PrismTests: XCTestCase {
             """
             enum Color {
                 case red
-            }
 
-            extension Color {
                 var red: Void? {
                     if case .red = self {
                         ()
@@ -77,9 +75,7 @@ final class PrismTests: XCTestCase {
                         nil
                     }
                 }
-            }
 
-            extension Color {
                 var isRed: Bool {
                     if case .red = self {
                         true
@@ -109,9 +105,7 @@ final class PrismTests: XCTestCase {
             """
             enum Color {
                 case red(Double)
-            }
 
-            extension Color {
                 var red: Double? {
                     get {
                         guard case let .red(value) = self else {
@@ -126,9 +120,7 @@ final class PrismTests: XCTestCase {
                         self = .red(newValue)
                     }
                 }
-            }
 
-            extension Color {
                 var isRed: Bool {
                     if case .red = self {
                         true
@@ -158,9 +150,7 @@ final class PrismTests: XCTestCase {
             """
             enum Color {
                 case red(brightness: Double)
-            }
 
-            extension Color {
                 var red: Double? {
                     get {
                         guard case let .red(value) = self else {
@@ -175,9 +165,7 @@ final class PrismTests: XCTestCase {
                         self = .red(brightness: newValue)
                     }
                 }
-            }
 
-            extension Color {
                 var isRed: Bool {
                     if case .red = self {
                         true
@@ -207,9 +195,7 @@ final class PrismTests: XCTestCase {
             """
             enum Color {
                 case red(Double, Double)
-            }
 
-            extension Color {
                 var red: (Double, Double)? {
                     get {
                         guard case let .red(associatedValue0, associatedValue1) = self else {
@@ -224,9 +210,7 @@ final class PrismTests: XCTestCase {
                         self = .red(newValue.0, newValue.1)
                     }
                 }
-            }
 
-            extension Color {
                 var isRed: Bool {
                     if case .red = self {
                         true
@@ -256,9 +240,7 @@ final class PrismTests: XCTestCase {
             """
             enum Color {
                 case red(brightness: Double, opacity: Double)
-            }
 
-            extension Color {
                 var red: (brightness: Double, opacity: Double)? {
                     get {
                         guard case let .red(brightness, opacity) = self else {
@@ -273,9 +255,7 @@ final class PrismTests: XCTestCase {
                         self = .red(brightness: newValue.brightness, opacity: newValue.opacity)
                     }
                 }
-            }
 
-            extension Color {
                 var isRed: Bool {
                     if case .red = self {
                         true
@@ -305,9 +285,7 @@ final class PrismTests: XCTestCase {
             """
             enum Color {
                 case red(brightness: Double, Double)
-            }
 
-            extension Color {
                 var red: (brightness: Double, Double)? {
                     get {
                         guard case let .red(brightness, associatedValue1) = self else {
@@ -322,9 +300,7 @@ final class PrismTests: XCTestCase {
                         self = .red(brightness: newValue.brightness, newValue.1)
                     }
                 }
-            }
 
-            extension Color {
                 var isRed: Bool {
                     if case .red = self {
                         true
@@ -354,9 +330,7 @@ final class PrismTests: XCTestCase {
             """
             enum Color {
                 case red(Double, opacity: Double)
-            }
 
-            extension Color {
                 var red: (Double, opacity: Double)? {
                     get {
                         guard case let .red(associatedValue0, opacity) = self else {
@@ -371,9 +345,7 @@ final class PrismTests: XCTestCase {
                         self = .red(newValue.0, opacity: newValue.opacity)
                     }
                 }
-            }
 
-            extension Color {
                 var isRed: Bool {
                     if case .red = self {
                         true
@@ -403,9 +375,7 @@ final class PrismTests: XCTestCase {
             """
             enum Color {
                 case red
-            }
 
-            extension Color {
                 public var red: Void? {
                     if case .red = self {
                         ()
@@ -413,9 +383,7 @@ final class PrismTests: XCTestCase {
                         nil
                     }
                 }
-            }
 
-            extension Color {
                 public var isRed: Bool {
                     if case .red = self {
                         true
@@ -445,9 +413,7 @@ final class PrismTests: XCTestCase {
             """
             enum Color {
                 case red
-            }
 
-            extension Color {
                 internal var red: Void? {
                     if case .red = self {
                         ()
@@ -455,9 +421,7 @@ final class PrismTests: XCTestCase {
                         nil
                     }
                 }
-            }
 
-            extension Color {
                 internal var isRed: Bool {
                     if case .red = self {
                         true
@@ -487,9 +451,7 @@ final class PrismTests: XCTestCase {
             """
             enum Color {
                 case red
-            }
 
-            extension Color {
                 fileprivate var red: Void? {
                     if case .red = self {
                         ()
@@ -497,9 +459,7 @@ final class PrismTests: XCTestCase {
                         nil
                     }
                 }
-            }
 
-            extension Color {
                 fileprivate var isRed: Bool {
                     if case .red = self {
                         true
@@ -529,9 +489,7 @@ final class PrismTests: XCTestCase {
             """
             enum Color {
                 case red
-            }
 
-            extension Color {
                 private var red: Void? {
                     if case .red = self {
                         ()
@@ -539,9 +497,7 @@ final class PrismTests: XCTestCase {
                         nil
                     }
                 }
-            }
 
-            extension Color {
                 private var isRed: Bool {
                     if case .red = self {
                         true
@@ -571,9 +527,7 @@ final class PrismTests: XCTestCase {
             """
             enum Color {
                 case red, green, blue
-            }
 
-            extension Color {
                 public var red: Void? {
                     if case .red = self {
                         ()
@@ -581,6 +535,7 @@ final class PrismTests: XCTestCase {
                         nil
                     }
                 }
+
                 public var green: Void? {
                     if case .green = self {
                         ()
@@ -588,6 +543,7 @@ final class PrismTests: XCTestCase {
                         nil
                     }
                 }
+
                 public var blue: Void? {
                     if case .blue = self {
                         ()
@@ -595,9 +551,7 @@ final class PrismTests: XCTestCase {
                         nil
                     }
                 }
-            }
 
-            extension Color {
                 public var isRed: Bool {
                     if case .red = self {
                         true
@@ -605,6 +559,7 @@ final class PrismTests: XCTestCase {
                         false
                     }
                 }
+
                 public var isGreen: Bool {
                     if case .green = self {
                         true
@@ -612,6 +567,7 @@ final class PrismTests: XCTestCase {
                         false
                     }
                 }
+
                 public var isBlue: Bool {
                     if case .blue = self {
                         true
@@ -645,9 +601,7 @@ final class PrismTests: XCTestCase {
                 case red
                 case green
                 case blue
-            }
 
-            extension Color {
                 public var red: Void? {
                     if case .red = self {
                         ()
@@ -655,6 +609,7 @@ final class PrismTests: XCTestCase {
                         nil
                     }
                 }
+
                 public var green: Void? {
                     if case .green = self {
                         ()
@@ -662,6 +617,7 @@ final class PrismTests: XCTestCase {
                         nil
                     }
                 }
+
                 public var blue: Void? {
                     if case .blue = self {
                         ()
@@ -669,9 +625,7 @@ final class PrismTests: XCTestCase {
                         nil
                     }
                 }
-            }
 
-            extension Color {
                 public var isRed: Bool {
                     if case .red = self {
                         true
@@ -679,6 +633,7 @@ final class PrismTests: XCTestCase {
                         false
                     }
                 }
+
                 public var isGreen: Bool {
                     if case .green = self {
                         true
@@ -686,6 +641,7 @@ final class PrismTests: XCTestCase {
                         false
                     }
                 }
+
                 public var isBlue: Bool {
                     if case .blue = self {
                         true
@@ -1004,9 +960,7 @@ final class PrismTests: XCTestCase {
                     }
                 }
                 case blue
-            }
 
-            extension Color {
                 public var red: Void? {
                     if case .red = self {
                         ()
@@ -1014,6 +968,7 @@ final class PrismTests: XCTestCase {
                         nil
                     }
                 }
+
                 public var blue: Void? {
                     if case .blue = self {
                         ()
@@ -1021,9 +976,7 @@ final class PrismTests: XCTestCase {
                         nil
                     }
                 }
-            }
 
-            extension Color {
                 public var isRed: Bool {
                     if case .red = self {
                         true
@@ -1031,6 +984,7 @@ final class PrismTests: XCTestCase {
                         false
                     }
                 }
+
                 public var isBlue: Bool {
                     if case .blue = self {
                         true
@@ -1065,9 +1019,7 @@ final class PrismTests: XCTestCase {
                 case red
                 case green
                 case blue
-            }
 
-            extension Color {
                 var red: Void? {
                     if case .red = self {
                         ()
@@ -1075,6 +1027,7 @@ final class PrismTests: XCTestCase {
                         nil
                     }
                 }
+
                 var blue: Void? {
                     if case .blue = self {
                         ()
@@ -1082,9 +1035,7 @@ final class PrismTests: XCTestCase {
                         nil
                     }
                 }
-            }
 
-            extension Color {
                 var isRed: Bool {
                     if case .red = self {
                         true
@@ -1092,6 +1043,7 @@ final class PrismTests: XCTestCase {
                         false
                     }
                 }
+
                 var isBlue: Bool {
                     if case .blue = self {
                         true
@@ -1124,9 +1076,7 @@ final class PrismTests: XCTestCase {
             enum Color {
                 case red
                 case green, blue
-            }
 
-            extension Color {
                 var red: Void? {
                     if case .red = self {
                         ()
@@ -1134,9 +1084,7 @@ final class PrismTests: XCTestCase {
                         nil
                     }
                 }
-            }
 
-            extension Color {
                 var isRed: Bool {
                     if case .red = self {
                         true
@@ -1172,9 +1120,7 @@ final class PrismTests: XCTestCase {
                 case red
                 case green
                 case blue
-            }
 
-            extension Color {
                 var red: Void? {
                     if case .red = self {
                         ()
@@ -1182,9 +1128,7 @@ final class PrismTests: XCTestCase {
                         nil
                     }
                 }
-            }
 
-            extension Color {
                 var isRed: Bool {
                     if case .red = self {
                         true
@@ -1264,9 +1208,7 @@ final class PrismTests: XCTestCase {
 
                 var blablabla: String { "aaaa" }
                 func blebleble() -> Int { 3 }
-            }
 
-            extension Bla {
                 public var x: Void? {
                     if case .x = self {
                         ()
@@ -1274,6 +1216,7 @@ final class PrismTests: XCTestCase {
                         nil
                     }
                 }
+
                 public var y: Void? {
                     if case .y = self {
                         ()
@@ -1281,6 +1224,7 @@ final class PrismTests: XCTestCase {
                         nil
                     }
                 }
+
                 public var z: Void? {
                     if case .z = self {
                         ()
@@ -1288,6 +1232,7 @@ final class PrismTests: XCTestCase {
                         nil
                     }
                 }
+
                 public var zzzz: Void? {
                     if case .zzzz = self {
                         ()
@@ -1295,6 +1240,7 @@ final class PrismTests: XCTestCase {
                         nil
                     }
                 }
+
                 public var xxxx: Void? {
                     if case .xxxx = self {
                         ()
@@ -1302,6 +1248,7 @@ final class PrismTests: XCTestCase {
                         nil
                     }
                 }
+
                 public var b: Void? {
                     if case .b = self {
                         ()
@@ -1309,6 +1256,7 @@ final class PrismTests: XCTestCase {
                         nil
                     }
                 }
+
                 public var c: (Int, other: Date)? {
                     get {
                         guard case let .c(associatedValue0, other) = self else {
@@ -1323,6 +1271,7 @@ final class PrismTests: XCTestCase {
                         self = .c(newValue.0, other: newValue.other)
                     }
                 }
+
                 public var d: (first: Int , other: Date)? {
                     get {
                         guard case let .d(first, other) = self else {
@@ -1337,6 +1286,7 @@ final class PrismTests: XCTestCase {
                         self = .d(first: newValue.first, other: newValue.other)
                     }
                 }
+
                 public var e: (Int, Date)? {
                     get {
                         guard case let .e(associatedValue0, associatedValue1) = self else {
@@ -1351,6 +1301,7 @@ final class PrismTests: XCTestCase {
                         self = .e(newValue.0, newValue.1)
                     }
                 }
+
                 public var someLongName: Void? {
                     if case .someLongName = self {
                         ()
@@ -1358,9 +1309,7 @@ final class PrismTests: XCTestCase {
                         nil
                     }
                 }
-            }
 
-            extension Bla {
                 public var isX: Bool {
                     if case .x = self {
                         true
@@ -1368,6 +1317,7 @@ final class PrismTests: XCTestCase {
                         false
                     }
                 }
+
                 public var isY: Bool {
                     if case .y = self {
                         true
@@ -1375,6 +1325,7 @@ final class PrismTests: XCTestCase {
                         false
                     }
                 }
+
                 public var isZ: Bool {
                     if case .z = self {
                         true
@@ -1382,6 +1333,7 @@ final class PrismTests: XCTestCase {
                         false
                     }
                 }
+
                 public var isZzzz: Bool {
                     if case .zzzz = self {
                         true
@@ -1389,6 +1341,7 @@ final class PrismTests: XCTestCase {
                         false
                     }
                 }
+
                 public var isXxxx: Bool {
                     if case .xxxx = self {
                         true
@@ -1396,6 +1349,7 @@ final class PrismTests: XCTestCase {
                         false
                     }
                 }
+
                 public var isB: Bool {
                     if case .b = self {
                         true
@@ -1403,6 +1357,7 @@ final class PrismTests: XCTestCase {
                         false
                     }
                 }
+
                 public var isC: Bool {
                     if case .c = self {
                         true
@@ -1410,6 +1365,7 @@ final class PrismTests: XCTestCase {
                         false
                     }
                 }
+
                 public var isD: Bool {
                     if case .d = self {
                         true
@@ -1417,6 +1373,7 @@ final class PrismTests: XCTestCase {
                         false
                     }
                 }
+
                 public var isE: Bool {
                     if case .e = self {
                         true
@@ -1424,6 +1381,7 @@ final class PrismTests: XCTestCase {
                         false
                     }
                 }
+            
                 public var isSomeLongName: Bool {
                     if case .someLongName = self {
                         true
