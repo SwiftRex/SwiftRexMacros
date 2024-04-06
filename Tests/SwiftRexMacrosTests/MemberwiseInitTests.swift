@@ -13,12 +13,12 @@ final class MemberwiseInitTests: XCTestCase {
         assertMacroExpansion(
             """
             @MemberwiseInit
-            struct BlackjackCard { }
+            struct BlackjackCard {
+            }
             """,
             expandedSource: """
-            struct BlackjackCard { }
+            struct BlackjackCard {
 
-            extension BlackjackCard {
                 init() {
                 }
             }
@@ -35,12 +35,12 @@ final class MemberwiseInitTests: XCTestCase {
         assertMacroExpansion(
             """
             @MemberwiseInit(visibility: .public)
-            struct BlackjackCard { }
+            struct BlackjackCard {
+            }
             """,
             expandedSource: """
-            struct BlackjackCard { }
+            struct BlackjackCard {
 
-            extension BlackjackCard {
                 public init() {
                 }
             }
@@ -57,10 +57,12 @@ final class MemberwiseInitTests: XCTestCase {
         assertMacroExpansion(
             """
             @MemberwiseInit
-            class BlackjackCard { }
+            class BlackjackCard {
+            }
             """,
             expandedSource: """
-            class BlackjackCard { }
+            class BlackjackCard {
+            }
             """,
             diagnostics: [
                 .init(message: "This macro has to be attached to a Struct declaration", line: 1, column: 1)
@@ -85,9 +87,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 let suit: String
-            }
 
-            extension BlackjackCard {
                 init(suit: String) {
                     self.suit = suit
                 }
@@ -113,9 +113,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 let suit: (String, String)
-            }
 
-            extension BlackjackCard {
                 init(suit: (String, String)) {
                     self.suit = suit
                 }
@@ -141,9 +139,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 let suit: (a: String, b: String)
-            }
 
-            extension BlackjackCard {
                 init(suit: (a: String, b: String)) {
                     self.suit = suit
                 }
@@ -169,9 +165,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 let suit: String
-            }
 
-            extension BlackjackCard {
                 public init(suit: String) {
                     self.suit = suit
                 }
@@ -197,9 +191,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 let suit: String
-            }
 
-            extension BlackjackCard {
                 internal init(suit: String) {
                     self.suit = suit
                 }
@@ -225,9 +217,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 let suit: String
-            }
 
-            extension BlackjackCard {
                 fileprivate init(suit: String) {
                     self.suit = suit
                 }
@@ -253,9 +243,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 let suit: String
-            }
 
-            extension BlackjackCard {
                 private init(suit: String) {
                     self.suit = suit
                 }
@@ -283,9 +271,7 @@ final class MemberwiseInitTests: XCTestCase {
             struct BlackjackCard {
                 let suit: String
                 let value: Int
-            }
 
-            extension BlackjackCard {
                 init(suit: String, value: Int) {
                     self.suit = suit
                     self.value = value
@@ -312,9 +298,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 let suit, value: String
-            }
 
-            extension BlackjackCard {
                 init(suit: String, value: String) {
                     self.suit = suit
                     self.value = value
@@ -341,9 +325,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 let suit, value, type: String
-            }
 
-            extension BlackjackCard {
                 init(suit: String, value: String, type: String) {
                     self.suit = suit
                     self.value = value
@@ -371,9 +353,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 let suit = "diamonds", value = "3", type: String
-            }
 
-            extension BlackjackCard {
                 init(type: String) {
                     self.type = type
                 }
@@ -399,9 +379,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 let suit, type: String, value, count: Int
-            }
 
-            extension BlackjackCard {
                 init(suit: String, type: String, value: Int, count: Int) {
                     self.suit = suit
                     self.type = type
@@ -430,9 +408,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 let suit = "diamonds", type: String, value = 3, count: Int
-            }
 
-            extension BlackjackCard {
                 init(type: String, count: Int) {
                     self.type = type
                     self.count = count
@@ -458,9 +434,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 let suit: String = "diamonds"
-            }
 
-            extension BlackjackCard {
                 init() {
                 }
             }
@@ -485,9 +459,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 var suit: String
-            }
 
-            extension BlackjackCard {
                 init(suit: String) {
                     self.suit = suit
                 }
@@ -513,9 +485,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 var suit: String = "diamonds"
-            }
 
-            extension BlackjackCard {
                 init(suit: String = "diamonds") {
                     self.suit = suit
                 }
@@ -541,9 +511,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 let suit: ((((String))))
-            }
 
-            extension BlackjackCard {
                 init(suit: String) {
                     self.suit = suit
                 }
@@ -569,9 +537,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 let suit: ((((String, Int))))
-            }
 
-            extension BlackjackCard {
                 init(suit: (String, Int)) {
                     self.suit = suit
                 }
@@ -597,9 +563,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 let suit: () -> String
-            }
 
-            extension BlackjackCard {
                 init(suit: @escaping () -> String) {
                     self.suit = suit
                 }
@@ -625,9 +589,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 let suit: () -> String?
-            }
 
-            extension BlackjackCard {
                 init(suit: @escaping () -> String?) {
                     self.suit = suit
                 }
@@ -653,9 +615,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 let suit: (() -> String)
-            }
 
-            extension BlackjackCard {
                 init(suit: @escaping () -> String) {
                     self.suit = suit
                 }
@@ -681,9 +641,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 let suit: (() -> String)?
-            }
 
-            extension BlackjackCard {
                 init(suit: (() -> String)?) {
                     self.suit = suit
                 }
@@ -713,9 +671,7 @@ final class MemberwiseInitTests: XCTestCase {
                 var suit: String {
                     "diamonds"
                 }
-            }
 
-            extension BlackjackCard {
                 init() {
                 }
             }
@@ -746,9 +702,7 @@ final class MemberwiseInitTests: XCTestCase {
                     didSet {
                     }
                 }
-            }
 
-            extension BlackjackCard {
                 init(suit: String) {
                     self.suit = suit
                 }
@@ -780,9 +734,7 @@ final class MemberwiseInitTests: XCTestCase {
                     willSet {
                     }
                 }
-            }
 
-            extension BlackjackCard {
                 init(suit: String) {
                     self.suit = suit
                 }
@@ -818,9 +770,7 @@ final class MemberwiseInitTests: XCTestCase {
                     didSet {
                     }
                 }
-            }
 
-            extension BlackjackCard {
                 init(suit: String) {
                     self.suit = suit
                 }
@@ -852,9 +802,7 @@ final class MemberwiseInitTests: XCTestCase {
                     get { "diamonds" }
                     set { }
                 }
-            }
 
-            extension BlackjackCard {
                 init() {
                 }
             }
@@ -883,9 +831,7 @@ final class MemberwiseInitTests: XCTestCase {
                 var suit: String {
                     get { "diamonds" }
                 }
-            }
 
-            extension BlackjackCard {
                 init() {
                 }
             }
@@ -910,9 +856,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 var string = "String"
-            }
 
-            extension BlackjackCard {
                 init(string : String = "String") {
                     self.string = string
                 }
@@ -938,9 +882,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 var int = 3
-            }
 
-            extension BlackjackCard {
                 init(int : Int = 3) {
                     self.int = int
                 }
@@ -966,9 +908,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 var double = 3.3
-            }
 
-            extension BlackjackCard {
                 init(double : Double = 3.3) {
                     self.double = double
                 }
@@ -994,9 +934,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 var bool = false
-            }
 
-            extension BlackjackCard {
                 init(bool : Bool = false) {
                     self.bool = bool
                 }
@@ -1022,9 +960,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 var date = Date()
-            }
 
-            extension BlackjackCard {
                 init(date : Date = Date()) {
                     self.date = date
                 }
@@ -1050,9 +986,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 var array = [Int]()
-            }
 
-            extension BlackjackCard {
                 init(array : [Int] = [Int] ()) {
                     self.array = array
                 }
@@ -1078,9 +1012,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 var array = Array<Int>()
-            }
 
-            extension BlackjackCard {
                 init(array : Array<Int> = Array<Int>()) {
                     self.array = array
                 }
@@ -1106,9 +1038,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 var dict = [Int: String]()
-            }
 
-            extension BlackjackCard {
                 init(dict : [Int: String] = [Int: String] ()) {
                     self.dict = dict
                 }
@@ -1134,9 +1064,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 var dict = Dictionary<Int, String>()
-            }
 
-            extension BlackjackCard {
                 init(dict : Dictionary<Int, String> = Dictionary<Int, String>()) {
                     self.dict = dict
                 }
@@ -1162,9 +1090,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 var date = Date.init()
-            }
 
-            extension BlackjackCard {
                 init(date : Date = Date.init()) {
                     self.date = date
                 }
@@ -1192,9 +1118,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 var date = Calendar.current.date(from: .init())
-            }
 
-            extension BlackjackCard {
                 init(date : Date? = Calendar.current.date(from: .init())) {
                     self.date = date
                 }
@@ -1220,9 +1144,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 var someEnum = MyEnum.something
-            }
 
-            extension BlackjackCard {
                 init(someEnum : MyEnum = MyEnum.something) {
                     self.someEnum = someEnum
                 }
@@ -1248,9 +1170,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 var optionalBool = Bool?.none
-            }
 
-            extension BlackjackCard {
                 init(optionalBool : Bool? = Bool?.none) {
                     self.optionalBool = optionalBool
                 }
@@ -1276,9 +1196,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 var optionalBool = Optional<Bool>.none
-            }
 
-            extension BlackjackCard {
                 init(optionalBool : Optional<Bool> = Optional<Bool>.none) {
                     self.optionalBool = optionalBool
                 }
@@ -1306,9 +1224,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 var optionalBool = Optional(true)
-            }
 
-            extension BlackjackCard {
                 init(optionalBool : Bool? = Optional(true)) {
                     self.optionalBool = optionalBool
                 }
@@ -1334,9 +1250,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 var void = ()
-            }
 
-            extension BlackjackCard {
                 init(void : () = ()) {
                     self.void = void
                 }
@@ -1362,9 +1276,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 var void: ()
-            }
 
-            extension BlackjackCard {
                 init(void: ()) {
                     self.void = void
                 }
@@ -1390,9 +1302,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 var void: Void
-            }
 
-            extension BlackjackCard {
                 init(void: Void) {
                     self.void = void
                 }
@@ -1418,9 +1328,7 @@ final class MemberwiseInitTests: XCTestCase {
             """
             struct BlackjackCard {
                 var tuple = ("", int: 5)
-            }
 
-            extension BlackjackCard {
                 init(tuple : (String, int: Int) = ("", int: 5)) {
                     self.tuple = tuple
                 }
@@ -1428,12 +1336,419 @@ final class MemberwiseInitTests: XCTestCase {
             """,
             macros: testMacros
         )
+
+#else
+        throw XCTSkip("macros are only supported when running tests for the host platform")
+#endif
+    }
+
+    func testMemberwiseInitInferElementsInANestedTuple() throws {
+#if canImport(SwiftRexMacroImplementation)
+        assertMacroExpansion(
+            """
+            @MemberwiseInit
+            struct BlackjackCard {
+                var tuple = ("", int: 5, innerNamed: (3.0, yes: true), (string: "", 2))
+            }
+            """,
+            expandedSource:
+            """
+            struct BlackjackCard {
+                var tuple = ("", int: 5, innerNamed: (3.0, yes: true), (string: "", 2))
+
+                init(tuple : (String, int: Int, innerNamed: (Double, yes: Bool), (string: String, Int)) = ("", int: 5, innerNamed: (3.0, yes: true), (string: "", 2))) {
+                    self.tuple = tuple
+                }
+            }
+            """,
+            macros: testMacros
+        )
+
+#else
+        throw XCTSkip("macros are only supported when running tests for the host platform")
+#endif
+    }
+
+    func testMemberwiseInitGenerics() throws {
+#if canImport(SwiftRexMacroImplementation)
+        assertMacroExpansion(
+            """
+            @MemberwiseInit
+            struct Card<T> {
+                var generics: T
+            }
+            """,
+            expandedSource:
+            """
+            struct Card<T> {
+                var generics: T
+
+                init(generics: T) {
+                    self.generics = generics
+                }
+            }
+            """,
+            macros: testMacros
+        )
+
+#else
+        throw XCTSkip("macros are only supported when running tests for the host platform")
+#endif
+    }
+
+    func testMemberwiseInitInferDifferentTypes() throws {
+#if canImport(SwiftRexMacroImplementation)
+        assertMacroExpansion(
+            """
+            @MemberwiseInit
+            struct Card {
+                var string = "", int = 0
+            }
+            """,
+            expandedSource:
+            """
+            struct Card {
+                var string = "", int = 0
+
+                init(string : String = "", int : Int = 0) {
+                    self.string = string
+                    self.int = int
+                }
+            }
+            """,
+            macros: testMacros
+        )
+
 #else
         throw XCTSkip("macros are only supported when running tests for the host platform")
 #endif
     }
 }
 
-enum MyEnum {
-    case something
+/* TODO: Try to implement these type inferences. Meanwhile, please put the explicit type.
+extension MemberwiseInitTests {
+    func testMemberwiseInitInferMath() throws {
+#if canImport(SwiftRexMacroImplementation)
+        assertMacroExpansion(
+            """
+            @MemberwiseInit
+            struct Card {
+                var multiplicationDouble = 2.0 * 0
+            }
+            """,
+            expandedSource:
+            """
+            struct Card {
+                var multiplicationDouble = 2.0 * 0
+
+                init(multiplicationDouble: Double = 2.0 * 0) {
+                    self.multiplicationDouble = multiplicationDouble
+                }
+            }
+            """,
+            macros: testMacros
+        )
+
+#else
+        throw XCTSkip("macros are only supported when running tests for the host platform")
+#endif
+    }
+
+    func testMemberwiseInitInferLogic() throws {
+#if canImport(SwiftRexMacroImplementation)
+        assertMacroExpansion(
+            """
+            @MemberwiseInit
+            struct Card {
+                var bool = 4 >= 4
+            }
+            """,
+            expandedSource:
+            """
+            struct Card {
+                var bool = 4 >= 4
+
+                init(bool: Bool = 4 >= 4) {
+                    self.bool = bool
+                }
+            }
+            """,
+            macros: testMacros
+        )
+
+#else
+        throw XCTSkip("macros are only supported when running tests for the host platform")
+#endif
+    }
+
+    func testMemberwiseInitInferRange() throws {
+#if canImport(SwiftRexMacroImplementation)
+        assertMacroExpansion(
+            """
+            @MemberwiseInit
+            struct Card {
+                var range = 0...10
+            }
+            """,
+            expandedSource:
+            """
+            struct Card {
+                var range = 0...10
+
+                init(range: Range<Int> = 0...10) {
+                    self.range = range
+                }
+            }
+            """,
+            macros: testMacros
+        )
+
+#else
+        throw XCTSkip("macros are only supported when running tests for the host platform")
+#endif
+    }
+
+    func testMemberwiseInitInferArrayLiteral() throws {
+#if canImport(SwiftRexMacroImplementation)
+        assertMacroExpansion(
+            """
+            @MemberwiseInit
+            struct Card {
+                var ints = [1, 2, 3]
+            }
+            """,
+            expandedSource:
+            """
+            struct Card {
+                var ints = [1, 2, 3]
+
+                init(ints: [Int] = [1, 2, 3]) {
+                    self.ints = ints
+                }
+            }
+            """,
+            macros: testMacros
+        )
+
+#else
+        throw XCTSkip("macros are only supported when running tests for the host platform")
+#endif
+    }
+
+    func testMemberwiseInitInferNestedArrayLiteral() throws {
+#if canImport(SwiftRexMacroImplementation)
+        assertMacroExpansion(
+            """
+            @MemberwiseInit
+            struct Card {
+                var ints = [[1, 2, 3]]
+            }
+            """,
+            expandedSource:
+            """
+            struct Card {
+                var ints = [[1, 2, 3]]
+
+                init(ints: [[Int]] = [[1, 2, 3]]) {
+                    self.ints = ints
+                }
+            }
+            """,
+            macros: testMacros
+        )
+
+#else
+        throw XCTSkip("macros are only supported when running tests for the host platform")
+#endif
+    }
+
+    func testMemberwiseInitInferArrayLiteralFloatingPoints() throws {
+#if canImport(SwiftRexMacroImplementation)
+        assertMacroExpansion(
+            """
+            @MemberwiseInit
+            struct Card {
+                var doubles = [1, 2.0, 3]
+            }
+            """,
+            expandedSource:
+            """
+            struct Card {
+                var doubles = [1, 2.0, 3]
+
+                init(doubles: [Double] = [1, 2.0, 3]) {
+                    self.doubles = doubles
+                }
+            }
+            """,
+            macros: testMacros
+        )
+
+#else
+        throw XCTSkip("macros are only supported when running tests for the host platform")
+#endif
+    }
+
+    func testMemberwiseInitInferDictionaryLiteral() throws {
+#if canImport(SwiftRexMacroImplementation)
+        assertMacroExpansion(
+            """
+            @MemberwiseInit
+            struct Card {
+                var kvs = ["a": 1, "b": 2, "c": 3]
+            }
+            """,
+            expandedSource:
+            """
+            struct Card {
+                var kvs = ["a": 1, "b": 2, "c": 3]
+
+                init(kvs: [String: Int] = ["a": 1, "b": 2, "c": 3]) {
+                    self.kvs = kvs
+                }
+            }
+            """,
+            macros: testMacros
+        )
+
+#else
+        throw XCTSkip("macros are only supported when running tests for the host platform")
+#endif
+    }
+
+    func testMemberwiseInitInferNestedDictionaryLiteral() throws {
+#if canImport(SwiftRexMacroImplementation)
+        assertMacroExpansion(
+            """
+            @MemberwiseInit
+            struct Card {
+                var kvs = ["a": ["a1": 1, "a2": 2], "b": ["b1": 1, "b2": 2], "c": ["c1": 1, "c2": 2]]
+            }
+            """,
+            expandedSource:
+            """
+            struct Card {
+                var kvs = ["a": ["a1": 1, "a2": 2], "b": ["b1": 1, "b2": 2], "c": ["c1": 1, "c2": 2]]
+
+                init(kvs: [String: [String: Int]] = ["a": ["a1": 1, "a2": 2], "b": ["b1": 1, "b2": 2], "c": ["c1": 1, "c2": 2]]) {
+                    self.kvs = kvs
+                }
+            }
+            """,
+            macros: testMacros
+        )
+
+#else
+        throw XCTSkip("macros are only supported when running tests for the host platform")
+#endif
+    }
+
+    func testMemberwiseInitInferDictionaryLiteralFloatingPoints() throws {
+#if canImport(SwiftRexMacroImplementation)
+        assertMacroExpansion(
+            """
+            @MemberwiseInit
+            struct Card {
+                var kvs = ["a": 1, "b": 2.0, "c": 3]
+            }
+            """,
+            expandedSource:
+            """
+            struct Card {
+                var kvs = ["a": 1, "b": 2.0, "c": 3]
+
+                init(kvs: [String: Double] = ["a": 1, "b": 2.0, "c": 3]) {
+                    self.kvs = kvs
+                }
+            }
+            """,
+            macros: testMacros
+        )
+
+#else
+        throw XCTSkip("macros are only supported when running tests for the host platform")
+#endif
+    }
+
+    func testMemberwiseInitInferCast() throws {
+#if canImport(SwiftRexMacroImplementation)
+        assertMacroExpansion(
+            """
+            @MemberwiseInit
+            struct Card {
+                var double = 3 as Double
+            }
+            """,
+            expandedSource:
+            """
+            struct Card {
+                var double = 3 as Double
+
+                init(double: Double = 3 as Double) {
+                    self.double = double
+                }
+            }
+            """,
+            macros: testMacros
+        )
+
+#else
+        throw XCTSkip("macros are only supported when running tests for the host platform")
+#endif
+    }
+
+    func testMemberwiseInitInferOptionalCast() throws {
+#if canImport(SwiftRexMacroImplementation)
+        assertMacroExpansion(
+            """
+            @MemberwiseInit
+            struct Card {
+                var double = 3 as? Double
+            }
+            """,
+            expandedSource:
+            """
+            struct Card {
+                var double = 3 as? Double
+
+                init(double: Double? = 3 as? Double) {
+                    self.double = double
+                }
+            }
+            """,
+            macros: testMacros
+        )
+
+#else
+        throw XCTSkip("macros are only supported when running tests for the host platform")
+#endif
+    }
+
+    func testMemberwiseInitInferForceCast() throws {
+#if canImport(SwiftRexMacroImplementation)
+        assertMacroExpansion(
+            """
+            @MemberwiseInit
+            struct Card {
+                var double = 3 as! Double
+            }
+            """,
+            expandedSource:
+            """
+            struct Card {
+                var double = 3 as! Double
+
+                init(double: Double = 3 as! Double) {
+                    self.double = double
+                }
+            }
+            """,
+            macros: testMacros
+        )
+
+#else
+        throw XCTSkip("macros are only supported when running tests for the host platform")
+#endif
+    }
 }
+*/

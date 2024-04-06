@@ -20,14 +20,12 @@ struct Property {
     let defaultValue: InitializerClauseSyntax?
 }
 
-public struct MemberwiseInit: ExtensionMacro {
+public struct MemberwiseInit: MemberMacro {
     public static func expansion(
         of node: SwiftSyntax.AttributeSyntax,
-        attachedTo declaration: some SwiftSyntax.DeclGroupSyntax,
-        providingExtensionsOf type: some SwiftSyntax.TypeSyntaxProtocol,
-        conformingTo protocols: [SwiftSyntax.TypeSyntax],
+        providingMembersOf declaration: some SwiftSyntax.DeclGroupSyntax,
         in context: some SwiftSyntaxMacros.MacroExpansionContext
-    ) throws -> [SwiftSyntax.ExtensionDeclSyntax] {
+    ) throws -> [SwiftSyntax.DeclSyntax] {
         guard let structDeclaration = declaration.as(StructDeclSyntax.self) else {
             throw MacroError.notAStruct
         }
@@ -84,34 +82,31 @@ public struct MemberwiseInit: ExtensionMacro {
             }
 
         return [
-            ExtensionDeclSyntax(
-                extendedType: type,
-                memberBlock: .init(members: MemberBlockItemListSyntax.init(itemsBuilder: {
-                    InitializerDeclSyntax(
-                        signature: FunctionSignatureSyntax(parameterClause: FunctionParameterClauseSyntax(parameters: .init(itemsBuilder: {
-                            for member in members {
-                                FunctionParameterSyntax(
-                                    firstName: member.propertyName,
-                                    type: member.propertyType,
-                                    defaultValue: member.defaultValue
-                                )
-                            }
-                        }))),
-                        bodyBuilder: {
-                            for member in members {
-                                InfixOperatorExprSyntax(
-                                    leftOperand: MemberAccessExprSyntax(
-                                        base: DeclReferenceExprSyntax(baseName: .`self`),
-                                        declName: DeclReferenceExprSyntax(baseName: member.propertyName)
-                                    ),
-                                    operator: AssignmentExprSyntax(),
-                                    rightOperand: DeclReferenceExprSyntax(baseName: member.propertyName)
-                                )
-                            }
-                        }
-                    ).set(visibility: node.visibility)
-                }))
+            InitializerDeclSyntax(
+                signature: FunctionSignatureSyntax(parameterClause: FunctionParameterClauseSyntax(parameters: .init(itemsBuilder: {
+                    for member in members {
+                        FunctionParameterSyntax(
+                            firstName: member.propertyName,
+                            type: member.propertyType,
+                            defaultValue: member.defaultValue
+                        )
+                    }
+                }))),
+                bodyBuilder: {
+                    for member in members {
+                        InfixOperatorExprSyntax(
+                            leftOperand: MemberAccessExprSyntax(
+                                base: DeclReferenceExprSyntax(baseName: .`self`),
+                                declName: DeclReferenceExprSyntax(baseName: member.propertyName)
+                            ),
+                            operator: AssignmentExprSyntax(),
+                            rightOperand: DeclReferenceExprSyntax(baseName: member.propertyName)
+                        )
+                    }
+                }
             )
+            .set(visibility: node.visibility)
+            .cast(DeclSyntax.self)
         ]
     }
 }

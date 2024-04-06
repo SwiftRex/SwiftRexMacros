@@ -280,7 +280,7 @@ public macro PrismCase(visibility: DeclarationVisibility = .internal) = #externa
 @attached(peer)
 public macro NoPrism() = #externalMacro(module: "SwiftRexMacroImplementation", type: "NoPrism")
 
-@attached(extension, names: arbitrary)
+@attached(member, names: arbitrary)
 public macro MemberwiseInit(visibility: DeclarationVisibility = .internal) = #externalMacro(module: "SwiftRexMacroImplementation", type: "MemberwiseInit")
 
 @attached(peer)
